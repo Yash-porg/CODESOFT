@@ -1,74 +1,67 @@
-contacts = {}
+import random
 
-def add_contact():
-    name = input("Enter Name: ").strip()
-    phone = input("Enter Phone: ").strip()
-    contacts[name] = {'phone': phone}
-    print("✅ Contact added successfully!")
+def display_instructions():
+    print("=" * 40)
+    print(" Welcome to Rock-Paper-Scissors! rock")
+    print("=" * 40)
+    print("Instructions:")
+    print("- Choose one: Rock, Paper, or Scissors")
+    print("- Rock beats Scissors")
+    print("- Scissors beat Paper")
+    print("- Paper beats Rock")
+    print("- Type 'exit' anytime to quit the game")
+    print("=" * 40)
 
-def view_contacts():
-    if not contacts:
-        print("📭 No contacts found.")
-        return
-    print("\n--- Contact List ---")
-    for name, details in contacts.items():
-        print(f"\nName : {name}")
-        print(f"Phone: {details['phone']}")
+def get_user_choice():
+    choice = input(" Enter your choice (rock/paper/scissors): ").lower()
+    while choice not in ['rock', 'paper', 'scissors', 'exit']:
+        choice = input(" Invalid choice. Please enter rock, paper, or scissors: ").lower()
+    return choice
 
-def search_contact():
-    name = input("Enter name to search: ").strip()
-    if name in contacts:
-        details = contacts[name]
-        print(f"\nName : {name}")
-        print(f"Phone: {details['phone']}")
+def get_computer_choice():
+    return random.choice(['rock', 'paper', 'scissors'])
+
+def determine_winner(user, computer):
+    if user == computer:
+        return "It's a tie!"
+    elif (user == 'rock' and computer == 'scissors') or \
+         (user == 'scissors' and computer == 'paper') or \
+         (user == 'paper' and computer == 'rock'):
+        return " You win!"
     else:
-        print("❌ Contact not found.")
+        return " You lose!"
 
-def update_contact():
-    name = input("Enter name to update: ").strip()
-    if name in contacts:
-        phone = input("New Phone: ").strip()
-        contacts[name]['phone'] = phone
-        print("🔄 Contact updated successfully.")
-    else:
-        print("❌ Contact not found.")
+def play_game():
+    user_score = 0
+    computer_score = 0
 
-def delete_contact():
-    name = input("Enter name to delete: ").strip()
-    if name in contacts:
-        del contacts[name]
-        print("🗑️ Contact deleted.")
-    else:
-        print("❌ Contact not found.")
+    display_instructions()
 
-def menu():
     while True:
-        print("\n📇 --- Contact Manager ---")
-        print("1. Add Contact")
-        print("2. View Contacts")
-        print("3. Search Contact")
-        print("4. Update Contact")
-        print("5. Delete Contact")
-        print("6. Exit")
-        choice = input("Choose an option (1-6): ").strip()
-
-        if choice == '1':
-            add_contact()
-        elif choice == '2':
-            view_contacts()
-        elif choice == '3':
-            search_contact()
-        elif choice == '4':
-            update_contact()
-        elif choice == '5':
-            delete_contact()
-        elif choice == '6':
-            print("👋 Goodbye!")
+        user_choice = get_user_choice()
+        if user_choice == 'exit':
+            print("\n Thanks for playing!")
+            print(f"Final Score - You: {user_score}, Computer: {computer_score}")
             break
-        else:
-            print("⚠️ Invalid choice. Try again.")
 
-# Ensure the main menu runs
+        computer_choice = get_computer_choice()
+
+        print(f"\n You chose: {user_choice.capitalize()}")
+        print(f" Computer chose: {computer_choice.capitalize()}")
+
+        result = determine_winner(user_choice, computer_choice)
+        print(f" Result: {result}")
+
+        if "win" in result:
+            user_score += 1
+        elif "lose" in result:
+            computer_score += 1
+
+        print(f" Score => You: {user_score} | Computer: {computer_score}\n")
+        print("-" * 40)
+
 if __name__ == "__main__":
-    menu()
+    play_game()
 
+    
+            
